@@ -31,7 +31,7 @@ class AutoSign(object):
         self.session = requests.session()
         # 登录-手机邮箱登录
         if schoolid:
-            r = self.session.post('http://passport2.chaoxing.com/api/login?name={}&pwd={}&schoolid={}&verify=0')
+            r = self.session.post('http://passport2-api.chaoxing.com/v6/idNumberLogin?fid={}&idNumber={}'.format(schoolid, username), data={'pwd': password})
         else:
             r = self.session.post(
                 'http://i.chaoxing.com/vlogin?passWord={}&userName={}'.format(password, username), headers=self.headers)
@@ -87,7 +87,7 @@ class AutoSign(object):
             res = re.findall('<title>(.*)</title>', r.text)
             return res[0]
 
-    def run(self, checkcode):
+    def run(self, checkcode=None):
         # 获取主页所有课程classid和coureseid
         # 因为具体不知道那一节需要签到，则直接遍历所有课程，都进行签到操作
         classid_courseId = self._get_all_classid()
